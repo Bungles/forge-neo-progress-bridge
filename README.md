@@ -67,7 +67,3 @@ No configuration needed. If ADetailer-Neo isn't installed, `adetailer` just alwa
 - **ADetailer counts**: `adetailer.py`'s two detection functions (`ultralytics_predict`, `mediapipe_predict`) are wrapped in place, inside ADetailer's own module object (found by matching `__file__` against Forge's `scripts_data` registry, since Forge's extension loader doesn't register extension modules in `sys.modules`). A second patch on `Script.postprocess_image` clears stale state at the start of every image. A third on `_postprocess_image_inner` captures which configured unit is currently running. A fourth on `Script.process_batch` tracks true batch-size image slots. A fifth on `modules.postprocessing.run_postprocessing` clears state when an unrelated Extras-tab job starts.
 - **Upscale progress**: `tqdm.tqdm` itself is patched (`__init__`/`update`/`close`), filtered to bars whose description contains `"Composite"` — this covers both CPU and GPU Composite tiled upscaling, wherever in Forge Neo they're triggered from, without depending on which specific function calls into `tqdm`.
 - Every patch is independent and retried on every `/status` poll until it succeeds, so a one-off startup-ordering issue self-heals without a Forge restart, and a failure in one signal never breaks another.
-
-## License
-
-MIT (or update to whatever you prefer before publishing).
